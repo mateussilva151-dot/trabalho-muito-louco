@@ -1,3 +1,6 @@
 node_modules/
 .env
 .history
+.env.example
+.package-lock.json
+.package.json
