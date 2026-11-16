@@ -19,13 +19,21 @@ CREATE TABLE IF NOT EXISTS consulta (
     id_consulta INT AUTO_INCREMENT PRIMARY KEY,
     data_hora DATETIME NOT NULL,
     motivo TEXT NOT NULL,
-    status ENUM('rascunho', 'agendada', 'concluida', 'cancelada') NOT NULL,
+    status_consulta ENUM('rascunho', 'agendada', 'concluida', 'cancelada') NOT NULL,
     fk_id_medico INT NULL,
     fk_id_paciente INT NULL,
-    CONSTRAINT fk_consulta_medico FOREIGN KEY (fk_id_medico) 
-        REFERENCES medico(id_medico) ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT fk_consulta_paciente FOREIGN KEY (fk_id_paciente) 
-        REFERENCES paciente(id_paciente) ON DELETE SET NULL ON UPDATE CASCADE
+    
+    CONSTRAINT fk_consulta_medico
+        FOREIGN KEY (fk_id_medico)
+        REFERENCES medico (id_medico)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE,
+        
+    CONSTRAINT fk_consulta_paciente
+        FOREIGN KEY (fk_id_paciente)
+        REFERENCES paciente (id_paciente)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
 );
 
 -- Massa de dados inicial (Mínimo de 3 médicos, 3 pacientes e 5 consultas)
