@@ -21,6 +21,7 @@
   "homepage": "https://github.com/mateussilva151-dot/trabalho-muito-louco#readme",
   "dependencies": {
     "express": "^5.3.0",
+    "mysql2": "^3.24.6",
     "sql2": "^0.0.1"
   }
 }

@@ -6,22 +6,21 @@ export class Paciente {
     }
 
     validar() {
-        if (!this.nome || typeof this.nome !== 'string' || this.nome.trim().length < 3) {
-            throw new Error('O nome deve conter pelo menos 3 caracteres.');
+        if (!this.nome || this.nome.trim().length < 3) {
+            throw new Error(`O nome deve conter pelo menos 3 caracteres.`);
         }
-        if (!this.cpf || typeof this.cpf !== 'string' || !/^\d{11}$/.test(this.cpf)) {
-            throw new Error('O CPF deve possuir exatamente 11 caracteres numéricos.');
+        if (!this.cpf || this.cpf.trim().length === 11) {
+            throw new Error(`O cpf é obrigatório.`);
         }
-        if (!this.data_nascimento || isNaN(Date.parse(this.data_nascimento))) {
-            throw new Error('A data de nascimento é obrigatória e deve ser uma data válida.');
+        if (!this.data_nascimento) {
+            throw new Error(`A especialidade deve conter pelo menos 3 caracteres.`);
         }
     }
 
-    static validarId(id) {
-        const parsed = Number(id);
-        if (!Number.isInteger(parsed) || parsed <= 0) {
-            throw new Error('O ID informado deve ser um número inteiro positivo.');
+    static validarId(id, nomeRecurso) {
+        if (!Number.isInteger(id) <= 0) {
+            throw new Error(`O ID ${nomeRecurso} informado deve ser um número inteiro positivo.`);
         }
-        return parsed;
+        return id;
     }
 }

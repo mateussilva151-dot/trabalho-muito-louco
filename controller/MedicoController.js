@@ -1,51 +1,50 @@
 import { Medico } from '../model/Medico.js';
 import { 
-    criarMedico, listarMedicos, buscarMedicoPorId, 
+    cadastrarMedico, listarMedicos, buscarMedicoPorId, 
     buscarMedicoPorCrm, atualizarMedico, excluirMedico 
 } from '../repository/MedicoRepository.js';
 
-export async function postMedico(req, res) {
+export async function cadastrarMedico(req, res) {
     try {
-        const modelInstance = new Medico(req.body);
-        modelInstance.validar();
+        const {nome, crm, especialidade} = req.body;
 
-        const crmExistente = await buscarMedicoPorCrm(modelInstance.crm);
-        if (crmExistente) {
+        crm = await buscarMedicoPorCrm(crm);
+        if (crm) {
             return res.status(409).json({ erro: 'CRM já cadastrado no sistema.' });
         }
+        
+        const medico = new Medico(nome, crm, especialidade);
+        medico.validar();
 
-        const id = await criarMedico(modelInstance);
-        return res.status(201).json({ id_medico: id, ...modelInstance });
-    } catch (err) {
-        if (err.message.includes('caracteres') || err.message.includes('obrigatório')) {
-            return res.status(400).json({ erro: err.message });
+        const id = await cadastrarMedico(medico);
+        return res.status(201).json({ id_medico: id, ...medico });
+    } catch (erro) {
+            return res.status(400).json({ erro: erro.message });
         }
-        return res.status(500).json({ erro: 'Erro interno do servidor.' });
-    }
+    return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
 }
 
-export async function getMedicos(req, res) {
+export async function listarTodosMedicos(req, res) {
     try {
         const medicos = await listarMedicos();
         return res.status(200).json(medicos);
-    } catch (err) {
-        return res.status(500).json({ erro: 'Erro interno do servidor.' });
+    } catch (erro) {
+        return res.status(500).json({ mensagem: 'Não foi possivel listar os medicos' });
     }
 }
 
-export async function getMedicoId(req, res) {
+export async function ListarMedicoPorId(req, res) {
     try {
         const id = Medico.validarId(req.params.id);
         const medico = await buscarMedicoPorId(id);
-        if (!medico) return res.status(404).json({ erro: 'Médico não encontrado.' });
+        if (!medico) return res.status(404).json({ mensagem: 'Médico não encontrado.' });
         return res.status(200).json(medico);
-    } catch (err) {
-        if (err.message.includes('positivo')) return res.status(400).json({ erro: err.message });
-        return res.status(500).json({ erro: 'Erro interno do servidor.' });
+    } catch (erro) {
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
     }
 }
 
-export async function patchMedico(req, res) {
+export async function editarMedico(req, res) {
     try {
         const id = Medico.validarId(req.params.id);
         const { nome, crm, especialidade } = req.body;
@@ -65,30 +64,32 @@ export async function patchMedico(req, res) {
         if (crm) {
             const crmExistente = await buscarMedicoPorCrm(crm);
             if (crmExistente && crmExistente.id_medico !== id) {
-                return res.status(409).json({ erro: 'CRM já cadastrado por outro médico.' });
+                return res.status(409).json({ mensagem: 'CRM já cadastrado por outro médico.' });
             }
         }
 
         const atualizado = await atualizarMedico(id, camposParaAtualizar);
-        if (!atualizado) return res.status(404).json({ erro: 'Médico não encontrado.' });
+        if (!atualizado) return res.status(404).json({ mensagem: 'Médico não encontrado.' });
 
         return res.status(200).json({ mensagem: 'Médico atualizado com sucesso.' });
-    } catch (err) {
-        if (err.message.includes('caracteres') || err.message.includes('positivo')) {
-            return res.status(400).json({ erro: err.message });
+    } catch (erro) {
+        if (erro.message.includes('caracteres') || erro.message.includes('positivo')) {
+            return res.status(400).json({ mensagem: erro.message });
         }
-        return res.status(500).json({ erro: 'Erro interno do servidor.' });
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
     }
 }
 
-export async function deleteMedico(req, res) {
+export async function deletarMedico(req, res) {
     try {
         const id = Medico.validarId(req.params.id);
-        const excluido = await excluirMedico(id);
-        if (!excluido) return res.status(404).json({ erro: 'Médico não encontrado.' });
+        const medico = await excluirMedico(id);
+
+        if (!medico) return res.status(404).json({ mensagem: 'Médico não encontrado.' });
+
         return res.status(200).json({ mensagem: 'Médico excluído com sucesso.' });
-    } catch (err) {
-        if (err.message.includes('positivo')) return res.status(400).json({ erro: err.message });
-        return res.status(500).json({ erro: 'Erro interno do servidor.' });
+    } catch (erro) {
+        if (erro.message.includes('positivo')) return res.status(400).json({ mensagem: erro.message });
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
     }
 }
