@@ -1,4 +1,5 @@
-CREATE DATABASE IF NOT EXISTS clinica_medica_db;
+DROP DATABASE IF EXISTS clinica_medica_db;
+CREATE DATABASE clinica_medica_db;
 USE clinica_medica_db;
 
 CREATE TABLE IF NOT EXISTS medico (
@@ -47,7 +48,7 @@ INSERT INTO paciente (nome, cpf, data_nascimento) VALUES
 ('Bruno Lima', '55566677788', '1985-08-22'),
 ('Carla Mendes', '99988877766', '1998-12-01');
 
-INSERT INTO consulta (data_hora, motivo, status, fk_id_medico, fk_id_paciente) VALUES
+INSERT INTO consulta (data_hora, motivo, status_consulta, fk_id_medico, fk_id_paciente) VALUES
 ('2026-11-20 09:00:00', 'Check-up de rotina cardiológico', 'agendada', 1, 1),
 ('2026-11-21 14:30:00', 'Dores no joelho pós-corrida', 'rascunho', 3, 2),
 ('2026-11-22 10:00:00', 'Consulta pediátrica mensal', 'agendada', 2, 3),
