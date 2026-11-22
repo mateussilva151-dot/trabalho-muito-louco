@@ -1,10 +1,10 @@
 import { Paciente } from '../model/Paciente.js';
 import { 
-    criarPaciente, listarPacientes, buscarPacientePorId, 
+    cadastrarPaciente, listarPacientes, buscarPacientePorId, 
     buscarPacientePorCpf, atualizarPaciente, excluirPaciente 
 } from '../repository/PacienteRepository.js';
 
-export async function postPaciente(req, res) {
+export async function criarPaciente(req, res) {
     try {
         const modelInstance = new Paciente(req.body);
         modelInstance.validar();
@@ -14,7 +14,7 @@ export async function postPaciente(req, res) {
             return res.status(409).json({ erro: 'CPF já cadastrado no sistema.' });
         }
 
-        const id = await criarPaciente(modelInstance);
+        const id = await cadastrarPaciente(modelInstance);
         return res.status(201).json({ id_paciente: id, ...modelInstance });
     } catch (err) {
         if (err.message.includes('caracteres') || err.message.includes('obrigatória')) {
@@ -24,7 +24,7 @@ export async function postPaciente(req, res) {
     }
 }
 
-export async function getPacientes(req, res) {
+export async function listarTodosPacientes(req, res) {
     try {
         const pacientes = await listarPacientes();
         return res.status(200).json(pacientes);
@@ -33,7 +33,7 @@ export async function getPacientes(req, res) {
     }
 }
 
-export async function getPacienteId(req, res) {
+export async function listarPacientePorId(req, res) {
     try {
         const id = Paciente.validarId(req.params.id);
         const paciente = await buscarPacientePorId(id);
@@ -45,7 +45,7 @@ export async function getPacienteId(req, res) {
     }
 }
 
-export async function patchPaciente(req, res) {
+export async function EditarPaciente(req, res) {
     try {
         const id = Paciente.validarId(req.params.id);
         const { nome, cpf, data_nascimento } = req.body;
@@ -81,7 +81,7 @@ export async function patchPaciente(req, res) {
     }
 }
 
-export async function deletePaciente(req, res) {
+export async function deletarPaciente(req, res) {
     try {
         const id = Paciente.validarId(req.params.id);
         const excluido = await excluirPaciente(id);

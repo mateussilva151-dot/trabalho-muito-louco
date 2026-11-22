@@ -1,8 +1,8 @@
-import express from 'express';
-import medicoRoutes from './routes/MedicoRoutes.js';
-import pacienteRoutes from './routes/PacienteRoutes.js';
-import consultaRoutes from './routes/ConsultaRoutes.js';
-import conexao from './database/conexao.js';
+import express from "express";
+import medicoRoutes from "./routes/medicoRoutes.js";
+import pacienteRoutes from "./routes/pacienteRoutes.js";
+import consultaRoutes from "./routes/consultaRoutes.js";
+import conexao from "./database/conexao.js";
 
 const app = express();
 
@@ -10,9 +10,9 @@ const app = express();
 app.use(express.json());
 
 // Registro de rotas estruturadas
-app.use('/medico', medicoRoutes);
-app.use('/paciente', pacienteRoutes);
-app.use('/consulta', consultaRoutes);
+app.use("/medico", medicoRoutes);
+app.use("/paciente", pacienteRoutes);
+app.use("/consulta", consultaRoutes);
 
 async function iniciarServidor() {
     try {
@@ -24,7 +24,7 @@ async function iniciarServidor() {
         });
     } catch (erro) {
         console.log("Não foi possivel conectar ao banco de dados");
-    };
-};
+    }
+}
 
 iniciarServidor();

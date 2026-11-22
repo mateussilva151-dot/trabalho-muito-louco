@@ -4,7 +4,7 @@ import {
     buscarMedicoPorCrm, atualizarMedico, excluirMedico 
 } from '../repository/MedicoRepository.js';
 
-export async function cadastrarMedico(req, res) {
+export async function criarMedico(req, res) {
     try {
         const {nome, crm, especialidade} = req.body;
 
@@ -33,7 +33,7 @@ export async function listarTodosMedicos(req, res) {
     }
 }
 
-export async function ListarMedicoPorId(req, res) {
+export async function listarMedicoPorId(req, res) {
     try {
         const id = Medico.validarId(req.params.id);
         const medico = await buscarMedicoPorId(id);

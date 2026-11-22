@@ -1,22 +1,22 @@
 import { Router } from 'express';
 import { 
-    postConsulta, getConsultas, getConsultaId, patchConsulta, deleteConsulta,
-    patchVincularMedico, patchRemoverMedico, patchVincularPaciente, patchRemoverPaciente
+    criarConsulta, listarTodasConsultas, listarConsultaPorId, editarConsulta, deletarConsulta,
+    adicionarVincularMedico, removerVinculoMedico, adicionarVinculoPaciente, removerVinculoPaciente
 } from '../controller/ConsultaController.js';
 
 const router = Router();
 
 // CRUD Comum
-router.post('/', postConsulta);
-router.get('/', getConsultas);
-router.get('/:id', getConsultaId);
-router.patch('/:id', patchConsulta);
-router.delete('/:id', deleteConsulta);
+router.post('/', criarConsulta);
+router.get('/', listarTodasConsultas);
+router.get('/:id', listarConsultaPorId);
+router.patch('/:id', editarConsulta);
+router.delete('/:id', deletarConsulta);
 
 // Relacionamentos
-router.patch('/:idConsulta/medico/:idMedico', patchVincularMedico);
-router.patch('/:idConsulta/remover-medico', patchRemoverMedico);
-router.patch('/:idConsulta/paciente/:idPaciente', patchVincularPaciente);
-router.patch('/:idConsulta/remover-paciente', patchRemoverPaciente);
+router.patch('/:idConsulta/medico/:idMedico', adicionarVincularMedico);
+router.patch('/:idConsulta/remover-medico', removerVinculoMedico);
+router.patch('/:idConsulta/paciente/:idPaciente', adicionarVinculoPaciente);
+router.patch('/:idConsulta/remover-paciente', removerVinculoPaciente);
 
 export default router;

@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import { 
-    postMedico, getMedicos, getMedicoId, patchMedico, deleteMedico 
+    criarMedico, listarTodosMedicos, listarMedicoPorId, editarMedico, deletarMedico 
 } from '../controller/MedicoController.js';
 
 const router = Router();
 
-router.post('/', postMedico);
-router.get('/', getMedicos);
-router.get('/:id', getMedicoId);
-router.patch('/:id', patchMedico);
-router.delete('/:id', deleteMedico);
+router.post('/', criarMedico);
+router.get('/', listarTodosMedicos);
+router.get('/:id', listarMedicoPorId);
+router.patch('/:id', editarMedico);
+router.delete('/:id', deletarMedico);
 
 export default router;

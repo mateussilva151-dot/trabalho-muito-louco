@@ -2,20 +2,20 @@ import { Consulta } from '../model/Consulta.js';
 import { Medico } from '../model/Medico.js';
 import { Paciente } from '../model/Paciente.js';
 import { 
-    criarConsulta, listarConsultas, buscarConsultaPorIdCompleta, 
+    cadastrarConsulta, listarConsultas, buscarConsultaPorIdCompleta, 
     atualizarConsulta, vincularMedico, vincularPaciente, excluirConsulta 
 } from '../repository/ConsultaRepository.js';
 import { buscarMedicoPorId } from '../repository/MedicoRepository.js';
 import { buscarPacientePorId } from '../repository/PacienteRepository.js';
 
-export async function postConsulta(req, res) {
+export async function criarConsulta(req, res) {
     try {
         // Ignora chaves estrangeiras enviadas diretamente no corpo
         const { data_hora, motivo, status } = req.body;
         const modelInstance = new Consulta({ data_hora, motivo, status });
         modelInstance.validar();
 
-        const id = await criarConsulta(modelInstance);
+        const id = await cadastrarConsulta(modelInstance);
         return res.status(201).json({ id_consulta: id, ...modelInstance, fk_id_medico: null, fk_id_paciente: null });
     } catch (err) {
         if (err.message.includes('obrigatórias') || err.message.includes('caracteres') || err.message.includes('status')) {
@@ -25,7 +25,7 @@ export async function postConsulta(req, res) {
     }
 }
 
-export async function getConsultas(req, res) {
+export async function listarTodasConsultas(req, res) {
     try {
         const consultas = await listarConsultas();
         return res.status(200).json(consultas);
@@ -34,7 +34,7 @@ export async function getConsultas(req, res) {
     }
 }
 
-export async function getConsultaId(req, res) {
+export async function listarConsultaPorId(req, res) {
     try {
         const id = Consulta.validarId(req.params.id);
         const consulta = await buscarConsultaPorIdCompleta(id);
@@ -46,7 +46,7 @@ export async function getConsultaId(req, res) {
     }
 }
 
-export async function patchConsulta(req, res) {
+export async function editarConsulta(req, res) {
     try {
         const id = Consulta.validarId(req.params.id);
         const { data_hora, motivo, status } = req.body;
@@ -75,7 +75,7 @@ export async function patchConsulta(req, res) {
     }
 }
 
-export async function patchVincularMedico(req, res) {
+export async function adicionarVincularMedico(req, res) {
     try {
         const idConsulta = Consulta.validarId(req.params.idConsulta);
         const idMedico = Medico.validarId(req.params.idMedico);
@@ -94,7 +94,7 @@ export async function patchVincularMedico(req, res) {
     }
 }
 
-export async function patchRemoverMedico(req, res) {
+export async function removerVinculoMedico(req, res) {
     try {
         const idConsulta = Consulta.validarId(req.params.idConsulta);
         const consulta = await buscarConsultaPorIdCompleta(idConsulta);
@@ -108,7 +108,7 @@ export async function patchRemoverMedico(req, res) {
     }
 }
 
-export async function patchVincularPaciente(req, res) {
+export async function adicionarVinculoPaciente(req, res) {
     try {
         const idConsulta = Consulta.validarId(req.params.idConsulta);
         const idPaciente = Paciente.validarId(req.params.idPaciente);
@@ -127,7 +127,7 @@ export async function patchVincularPaciente(req, res) {
     }
 }
 
-export async function patchRemoverPaciente(req, res) {
+export async function removerVinculoPaciente(req, res) {
     try {
         const idConsulta = Consulta.validarId(req.params.idConsulta);
         const consulta = await buscarConsultaPorIdCompleta(idConsulta);
@@ -141,7 +141,7 @@ export async function patchRemoverPaciente(req, res) {
     }
 }
 
-export async function deleteConsulta(req, res) {
+export async function deletarConsulta(req, res) {
     try {
         const id = Consulta.validarId(req.params.id);
         const excluido = await excluirConsulta(id);
