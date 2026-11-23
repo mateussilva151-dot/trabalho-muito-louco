@@ -12,7 +12,7 @@ export class Consulta {
         if (!this.motivo || this.motivo.trim().length < 5) {
             throw new Error('O motivo deve conter pelo menos 5 caracteres.');
         }
-        if (!this.status || this.status !== 'rascunho' || this.status !== 'agendada' || this.status !== 'concluida' || this.status !== 'cancelada') {
+        if (!['rascunho', 'agendada', 'concluida', 'cancelada'].includes(this.status)) {
             throw new Error('status invalido, deve conter ou rascunho ou agendada ou concluida ou cancelada...');
         }
     }

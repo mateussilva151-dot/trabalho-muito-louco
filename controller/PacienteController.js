@@ -6,16 +6,17 @@ import {
 
 export async function criarPaciente(req, res) {
     try {
-        const modelInstance = new Paciente(req.body);
-        modelInstance.validar();
+        const {nome, cpf, data_nascimento} = req.body
+        const paciente = new Paciente({nome, cpf, data_nascimento});
+        paciente.validar();
 
-        const cpfExistente = await buscarPacientePorCpf(modelInstance.cpf);
+        const cpfExistente = await buscarPacientePorCpf(paciente.cpf);
         if (cpfExistente) {
             return res.status(409).json({ erro: 'CPF já cadastrado no sistema.' });
         }
 
-        const id = await cadastrarPaciente(modelInstance);
-        return res.status(201).json({ id_paciente: id, ...modelInstance });
+        const id = await cadastrarPaciente(paciente);
+        return res.status(201).json({ id_paciente: id, ...paciente });
     } catch (err) {
         if (err.message.includes('caracteres') || err.message.includes('obrigatória')) {
             return res.status(400).json({ erro: err.message });

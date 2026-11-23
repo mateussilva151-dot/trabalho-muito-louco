@@ -8,13 +8,13 @@ export class Paciente {
     validar() {
         if (!this.nome || this.nome.trim().length < 3) {
             throw new Error(`O nome deve conter pelo menos 3 caracteres.`);
-        }
-        if (!this.cpf || this.cpf.trim().length === 11) {
-            throw new Error(`O cpf é obrigatório.`);
-        }
+        };
+        if (!this.cpf || this.cpf.trim().length !== 11) {
+            throw new Error(`O cpf é obrigatório. O cpf deve conter 11 caracteres!`);
+        };
         if (!this.data_nascimento) {
             throw new Error(`A especialidade deve conter pelo menos 3 caracteres.`);
-        }
+        };
     }
 
     static validarId(id, nomeRecurso) {

@@ -8,20 +8,20 @@ export async function criarMedico(req, res) {
     try {
         const {nome, crm, especialidade} = req.body;
 
-        crm = await buscarMedicoPorCrm(crm);
-        if (crm) {
+        const crmR = await buscarMedicoPorCrm(crm);
+        if (crmR) {
             return res.status(409).json({ erro: 'CRM já cadastrado no sistema.' });
         }
         
-        const medico = new Medico(nome, crm, especialidade);
+        const medico = new Medico({nome, crm, especialidade});
         medico.validar();
 
         const id = await cadastrarMedico(medico);
         return res.status(201).json({ id_medico: id, ...medico });
     } catch (erro) {
-            return res.status(400).json({ erro: erro.message });
-        }
-    return res.status(500).json({ mensagem: 'Erro interno do servidor.' });
+        return res.status(500).json({ mensagem: 'Erro interno do servidor.' });   
+    }
+    
 }
 
 export async function listarTodosMedicos(req, res) {

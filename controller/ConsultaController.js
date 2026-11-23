@@ -12,11 +12,11 @@ export async function criarConsulta(req, res) {
     try {
         // Ignora chaves estrangeiras enviadas diretamente no corpo
         const { data_hora, motivo, status } = req.body;
-        const modelInstance = new Consulta({ data_hora, motivo, status });
-        modelInstance.validar();
+        const consulta = new Consulta({ data_hora, motivo, status });
+        consulta.validar();
 
-        const id = await cadastrarConsulta(modelInstance);
-        return res.status(201).json({ id_consulta: id, ...modelInstance, fk_id_medico: null, fk_id_paciente: null });
+        const id = await cadastrarConsulta(consulta);
+        return res.status(201).json({ id_consulta: id, ...consulta, fk_id_medico: null, fk_id_paciente: null });
     } catch (err) {
         if (err.message.includes('obrigatórias') || err.message.includes('caracteres') || err.message.includes('status')) {
             return res.status(400).json({ erro: err.message });

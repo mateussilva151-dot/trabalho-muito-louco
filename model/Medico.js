@@ -5,12 +5,11 @@ export class Medico {
         this.especialidade = especialidade;
     }
 
-    
     validar() {
         if (!this.nome || this.nome.trim().length < 3) {
             throw new Error(`O nome deve conter pelo menos 3 caracteres.`);
         }
-        if (!this.crm || this.crm.trim().length === 0) {
+        if (!this.crm) {
             throw new Error(`O CRM é obrigatório.`);
         }
         if (!this.especialidade || this.especialidade.trim().length < 3) {
